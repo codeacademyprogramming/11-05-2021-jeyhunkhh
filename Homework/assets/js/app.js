@@ -223,14 +223,16 @@ if (loginForm) {
       password.value.trim() == account.password
     ) {
       window.location.replace("/");
-      
-      localStorage.setItem(
-        "Lang",
-        JSON.stringify({
-          lang: "AZ",
-          theme: "dark",
-        })
-      );
+
+      if(JSON.parse(localStorage.getItem("Lang")) == null){
+        localStorage.setItem(
+          "Lang",
+          JSON.stringify({
+            lang: "AZ",
+            theme: "dark",
+          })
+        );
+      }
 
       sessionStorage.removeItem("user");
       let date = new Date();
