@@ -215,15 +215,7 @@ if (loginForm) {
         })
       );
 
-      sessionStorage.setItem(
-        "user",
-        JSON.stringify({
-          email: "admin@admin",
-          fullname: "Admin Admin",
-          username: "Admin",
-        })
-      );
-
+      sessionStorage.removeItem("user")
       let date = new Date();
       date.setDate(date.getDate() + 1);
       document.cookie = `token=supersecuretoken11; expires=${date}`;
