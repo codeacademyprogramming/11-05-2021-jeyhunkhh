@@ -120,44 +120,47 @@ function Search(data) {
   userList(data);
 }
 
-$.ajax({
-  url: "./assets/data/db.json",
-  dataType: "json",
-  async: false,
-  success: function (response) {
-    users = response;
+let urlUser = "./assets/data/db.json"
 
-    if (table) {
-      if (!userAuthentication()) {
-        window.location.replace("/login.html");
-      }
-      userList(users);
+async function getJson(url) {
+  let response = await fetch(url);
+  let data = await response.json()
+  return data;
+}
 
-      let checkBox = document.querySelector(".active-loan");
-      let isActive = document.querySelectorAll(".is-active");
-      checkBox.addEventListener("click", () => {
-        isActive.forEach((e) => {
-          let span = e.querySelector("span");
-          if (!e.parentNode.classList.contains("active")) {
-            if (span.innerText == "Active") {
-              e.parentNode.style.display = "";
-            } else {
-              e.parentNode.style.display = "none";
-            }
-            e.parentNode.classList.add("active");
-          } else {
-            e.parentNode.classList.remove("active");
-            e.parentNode.style.display = "";
-          }
-        });
-      });
-
-      searchInput.addEventListener("keyup", () => Search(users));
+async function main(){
+  users = await getJson(urlUser);
+  if (table) {
+    if (!userAuthentication()) {
+      window.location.replace("/login.html");
     }
-  },
-});
+    userList(users);
 
-//Login
+    let checkBox = document.querySelector(".active-loan");
+    let isActive = document.querySelectorAll(".is-active");
+    checkBox.addEventListener("click", () => {
+      isActive.forEach((e) => {
+        let span = e.querySelector("span");
+        if (!e.parentNode.classList.contains("active")) {
+          if (span.innerText == "Active") {
+            e.parentNode.style.display = "";
+          } else {
+            e.parentNode.style.display = "none";
+          }
+          e.parentNode.classList.add("active");
+        } else {
+          e.parentNode.classList.remove("active");
+          e.parentNode.style.display = "";
+        }
+      });
+    });
+
+    searchInput.addEventListener("keyup", () => Search(users));
+  }
+
+}
+
+// Login
 const account = {
   email: "admin@admin",
   fullname: "Admin Admin",
@@ -335,3 +338,5 @@ logOutBtn.addEventListener("click", () => {
   date.setDate(date.getDate() - 1);
   document.cookie = `token=; expires=${date}`;
 });
+
+main();
