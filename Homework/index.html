@@ -15,7 +15,9 @@
     <header>
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <div class="container">
-                <a class="navbar-brand" href="#"><h2 class="logo">Credit</h2></a>
+                <a class="navbar-brand" href="#">
+                    <h2 class="logo">Credit</h2>
+                </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
                     aria-expanded="false" aria-label="Toggle navigation">
@@ -24,15 +26,16 @@
                 <div class="collapse navbar-collapse justify-content-end " id="navbarSupportedContent">
                     <div class="user d-flex align-items-center">
                         <h5 class="user-name mb-0" style="margin-right: 15px;"></h5>
-                        <img src="https://www.superiorlawncareusa.com/wp-content/uploads/2020/05/loading-gif-png-5.gif" style="width: 50px; height: 50px;" class="rounded-circle user-img" alt="">
+                        <img src="https://www.superiorlawncareusa.com/wp-content/uploads/2020/05/loading-gif-png-5.gif"
+                            style="width: 50px; height: 50px;" class="rounded-circle user-img" alt="">
                         <a href="login.html" class="btn log-out text-decoration-underline"> Log Out</a>
                     </div>
                     <div class="d-flex justify-content-between">
                         <div>
-                               <a data-id="AZ" class="lang btn btn-success" href="index.html">AZ</a> 
+                            <a data-id="AZ" class="lang btn btn-success" href="index.html">AZ</a>
                         </div>
                         <div>
-                               <a data-id="EN" href="index.html" class="btn lang">EN</a>
+                            <a data-id="EN" href="index.html" class="btn lang">EN</a>
                         </div>
                     </div>
                 </div>
@@ -48,8 +51,8 @@
                         aria-describedby="emailHelp">
                 </div>
             </form>
-            <table class="table table-hover">
-                <thead class="table-dark ">
+            <table class="table main-table table-dark table-hover">
+                <thead class=" ">
                     <tr class="user-list-header">
                         <th scope="col">№</th>
                         <th scope="col">Image</th>
@@ -57,9 +60,15 @@
                         <th scope="col">Monthly Salary</th>
                         <th scope="col">Total monthly pay </th>
                         <th scope="col">Credit permit </th>
-                        <th class="check" scope="col"><span>Active loan</span> <input
-                                class="form-check-input active-loan" type="checkbox"></th>
-                        <th></th>
+                        <th class="check" scope="col"><span>Active loan</span> 
+                            <input class="form-check-input active-loan" type="checkbox"></th>
+                        <th>
+                            <div class="form-check form-switch">
+                                <input class="form-check-input theme-btn" type="checkbox" id="flexSwitchCheckChecked"
+                                    checked>
+                                <label class="form-check-label" for="flexSwitchCheckChecked">Theme</label>
+                            </div>
+                        </th>
                     </tr>
                 </thead>
                 <tbody id="user-list">

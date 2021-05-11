@@ -120,47 +120,51 @@ function Search(data) {
   userList(data);
 }
 
-let urlData = "./assets/data/db.json"
-let userInfo = "https://randomuser.me/api/"
+let urlData = "./assets/data/db.json";
+let userInfo = "https://randomuser.me/api/";
 
 async function getJson(url) {
   let response = await fetch(url);
-  let data = await response.json()
+  let data = await response.json();
   return data;
 }
 
 async function getUserInfo(url) {
   let response = await fetch(url);
-  let data = await response.results.json()
+  let data = await response.results.json();
   return data;
 }
 
-async function main(){
+async function main() {
   users = await getJson(urlData);
   let loginUserInfo = await getJson(userInfo);
 
   if (table) {
     if (!userAuthentication()) {
       window.location.replace("/login.html");
-    }else if(sessionStorage.getItem("user")== null){
+    } else if (sessionStorage.getItem("user") == null) {
       sessionStorage.setItem(
         "user",
         JSON.stringify({
           email: `${loginUserInfo.results[0].email}`,
-          fullname: `${loginUserInfo.results[0].name.first + "  " + loginUserInfo.results[0].name.last}`,
+          fullname: `${
+            loginUserInfo.results[0].name.first +
+            "  " +
+            loginUserInfo.results[0].name.last
+          }`,
           country: `${loginUserInfo.results[0].location.country}`,
           image: `${loginUserInfo.results[0].picture.thumbnail}`,
-          timezome: `${loginUserInfo.results[0].location.timezone.description}`
+          timezome: `${loginUserInfo.results[0].location.timezone.description}`,
         })
       );
     }
 
     userList(users);
 
-    let user = document.querySelector(".user .user-name")
-    let userImg = document.querySelector(".user .user-img")
-    user.innerText = JSON.parse(sessionStorage.getItem("user")).fullname
-    userImg.src = JSON.parse(sessionStorage.getItem("user")).image
+    let user = document.querySelector(".user .user-name");
+    let userImg = document.querySelector(".user .user-img");
+    user.innerText = JSON.parse(sessionStorage.getItem("user")).fullname;
+    userImg.src = JSON.parse(sessionStorage.getItem("user")).image;
 
     let checkBox = document.querySelector(".active-loan");
     let isActive = document.querySelectorAll(".is-active");
@@ -184,6 +188,19 @@ async function main(){
     searchInput.addEventListener("keyup", () => Search(users));
   }
 
+  if (logOutBtn) {
+    // Log-out
+    logOutBtn.addEventListener("click", () => {
+      let date = new Date();
+      date.setDate(date.getDate() - 1);
+      document.cookie = `token=; expires=${date}`;
+    });
+  }
+
+  if (JSON.parse(localStorage.getItem("Lang")) != null) {
+    changeLang(JSON.parse(localStorage.getItem("Lang")).lang);
+    themeChange();
+  }
 }
 
 // Login
@@ -206,24 +223,23 @@ if (loginForm) {
       password.value.trim() == account.password
     ) {
       window.location.replace("/");
-
+      
       localStorage.setItem(
         "Lang",
         JSON.stringify({
           lang: "AZ",
-          theme: "light",
+          theme: "dark",
         })
       );
 
-      sessionStorage.removeItem("user")
+      sessionStorage.removeItem("user");
       let date = new Date();
       date.setDate(date.getDate() + 1);
       document.cookie = `token=supersecuretoken11; expires=${date}`;
-    }else{
-      let span = document.querySelector(".login span")
-      span.classList.remove("d-none")
+    } else {
+      let span = document.querySelector(".login span");
+      span.classList.remove("d-none");
     }
-
   });
   if (userAuthentication()) {
     window.location.replace("/");
@@ -262,7 +278,7 @@ var langs = {
     logo_name: "Credit",
     modal_title: "User credit list",
     table_column_button: "More detail",
-    logOut: "Log Out"
+    logOut: "Log Out",
   },
   AZ: {
     UserList: {
@@ -287,7 +303,7 @@ var langs = {
     logo_name: "Kredit",
     modal_title: "İstifadəçinin kredit listi",
     table_column_button: "Əlavə məlumatlar",
-    logOut: "Çıxış"
+    logOut: "Çıxış",
   },
 };
 
@@ -329,36 +345,65 @@ let navbar = document.querySelector(".navbar");
 
 if (navbar) {
   let langBtn = document.querySelectorAll(".lang");
-  langBtn.forEach((btn) => {
-    if (
-      btn.getAttribute("data-id") ==
-      JSON.parse(localStorage.getItem("Lang")).lang
-    ) {
-      btn.classList.add("btn-success");
-    } else {
-      btn.classList.remove("btn-success");
-      btn.addEventListener("click", (e) => {
-        e.preventDefault();
-        localStorage.setItem(
-          "Lang",
-          JSON.stringify({
-            lang: btn.getAttribute("data-id").toString(),
-            theme: "light",
-          })
-        );
-        window.location.replace("/");
-      });
-    }
-  });
+  if (JSON.parse(localStorage.getItem("Lang")) != null) {
+    langBtn.forEach((btn) => {
+      if (
+        btn.getAttribute("data-id") ==
+        JSON.parse(localStorage.getItem("Lang")).lang
+      ) {
+        btn.classList.add("btn-success");
+      } else {
+        btn.classList.remove("btn-success");
+        btn.addEventListener("click", (e) => {
+          e.preventDefault();
+          localStorage.setItem(
+            "Lang",
+            JSON.stringify({
+              lang: btn.getAttribute("data-id").toString(),
+              theme: JSON.parse(localStorage.getItem("Lang")).theme,
+            })
+          );
+          window.location.replace("/");
+        });
+      }
+    });
+  }
 }
 
-changeLang(JSON.parse(localStorage.getItem("Lang")).lang);
+// Theme
+themeChange = () => {
+  let themeBtn = document.querySelector(".theme-btn");
+  let mainTable = document.querySelector(".main-table")
+  if(JSON.parse(localStorage.getItem("Lang")).theme != "dark"){
+    mainTable.classList.remove("table-dark")
+    themeBtn.removeAttribute("checked");
+  }else{
+    mainTable.classList.add("table-dark")
+  }
 
-// Log-out
-logOutBtn.addEventListener("click", () => {
-  let date = new Date();
-  date.setDate(date.getDate() - 1);
-  document.cookie = `token=; expires=${date}`;
-});
+  themeBtn.addEventListener("click", () => {
+    if (themeBtn.hasAttribute("checked")) {
+      mainTable.classList.remove("table-dark")
+      themeBtn.removeAttribute("checked");
+      localStorage.setItem(
+        "Lang",
+        JSON.stringify({
+          lang: JSON.parse(localStorage.getItem("Lang")).lang,
+          theme: "light",
+        })
+      );
+    } else {
+      mainTable.classList.add("table-dark")
+      themeBtn.setAttribute("checked", "");
+      localStorage.setItem(
+        "Lang",
+        JSON.stringify({
+          lang: JSON.parse(localStorage.getItem("Lang")).lang,
+          theme: "dark",
+        })
+      );
+    }
+  });
+};
 
 main();
