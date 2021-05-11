@@ -120,7 +120,8 @@ function Search(data) {
   userList(data);
 }
 
-let urlUser = "./assets/data/db.json"
+let urlData = "./assets/data/db.json"
+let userInfo = "https://randomuser.me/api/"
 
 async function getJson(url) {
   let response = await fetch(url);
@@ -128,13 +129,38 @@ async function getJson(url) {
   return data;
 }
 
+async function getUserInfo(url) {
+  let response = await fetch(url);
+  let data = await response.results.json()
+  return data;
+}
+
 async function main(){
-  users = await getJson(urlUser);
+  users = await getJson(urlData);
+  let loginUserInfo = await getJson(userInfo);
+
   if (table) {
     if (!userAuthentication()) {
       window.location.replace("/login.html");
+    }else if(sessionStorage.getItem("user")== null){
+      sessionStorage.setItem(
+        "user",
+        JSON.stringify({
+          email: `${loginUserInfo.results[0].email}`,
+          fullname: `${loginUserInfo.results[0].name.first + "  " + loginUserInfo.results[0].name.last}`,
+          country: `${loginUserInfo.results[0].location.country}`,
+          image: `${loginUserInfo.results[0].picture.thumbnail}`,
+          timezome: `${loginUserInfo.results[0].location.timezone.description}`
+        })
+      );
     }
+
     userList(users);
+
+    let user = document.querySelector(".user .user-name")
+    let userImg = document.querySelector(".user .user-img")
+    user.innerText = JSON.parse(sessionStorage.getItem("user")).fullname
+    userImg.src = JSON.parse(sessionStorage.getItem("user")).image
 
     let checkBox = document.querySelector(".active-loan");
     let isActive = document.querySelectorAll(".is-active");
@@ -165,7 +191,7 @@ const account = {
   email: "admin@admin",
   fullname: "Admin Admin",
   username: "Admin",
-  password: "admin",
+  password: "54321",
 };
 
 let loginForm = document.querySelector("#login .login");
