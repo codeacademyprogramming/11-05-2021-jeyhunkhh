@@ -21,11 +21,12 @@
                         <form class="login">
                             <div class="mb-3">
                               <label for="email"  class="form-label">Email address</label>
-                              <input type="email" placeholder="admin@admin" class="form-control" id="email" aria-describedby="emailHelp">
+                              <input type="email" placeholder="admin@admin" required class="form-control" id="email" aria-describedby="emailHelp">
                             </div>
                             <div class="mb-3">
                               <label for="password" class="form-label">Password</label>
-                              <input type="password" placeholder="54321" class="form-control" id="password">
+                              <input type="password" placeholder="54321" required class="form-control" id="password">
+                              <span class="text-danger d-none">The email or password is incorrect</span>
                             </div>
                             <button type="submit" class="btn w-100 btn-primary">Login</button>
                           </form>

@@ -219,7 +219,11 @@ if (loginForm) {
       let date = new Date();
       date.setDate(date.getDate() + 1);
       document.cookie = `token=supersecuretoken11; expires=${date}`;
+    }else{
+      let span = document.querySelector(".login span")
+      span.classList.remove("d-none")
     }
+
   });
   if (userAuthentication()) {
     window.location.replace("/");
